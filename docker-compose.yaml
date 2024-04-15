@@ -1,0 +1,15 @@
+version: '3'
+services:
+  rimusophieapi:
+    container_name: rimusophieapi
+    build: .
+    volumes:
+     - .dockerenv:/src/.venv
+     - .:/src
+     - dockerenv:/src/.venv
+    ports:
+     - 8000:8000  # ホストマシンのポート 8000 を、dokcer内のポート 8000 に接続する
+    environment:
+      - WATCHFILES_FORCE_POLLING = true # 環境によってホットリロードのために必要
+volumes:
+  dockerenv:
