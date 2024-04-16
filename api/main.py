@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-app = FastAPI()
+from api.routers import skill, job_career, portfolio
 
-@app.get("/hello")
-async def hello():
-    return {"message": "hello world!"}
+app = FastAPI()
+app.include_router(skill.router)
+app.include_router(job_career.router)
+app.include_router(portfolio.router)
