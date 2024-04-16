@@ -1,19 +1,14 @@
-# python3.11のイメージをダウンロード
-FROM python:3.11-buster
+# python3.7のイメージをダウンロード
+FROM python:3.7-alpine
 # pythonの出力表示をDocker用に調整
 ENV PYTHONUNBUFFERED = 1
 
 WORKDIR /src
 
 # pipを使ってpoetryをインストール
-RUN pip install poetry
+RUN pip install --no-cache-dir fastapi uvicorn
 
-# poetryの定義ファイルをコピー(存在する場合)
-COPY pyproject.toml* poetry.lock* ./
-
-# poetryでライブラリをインストール(pyproject.tomlがすでにある場合)
-RUN poetry config virtualenvs.in-project true
-RUN if [ -f pyproject.toml]; then poetry install --no-root; fi
+EXPOSE 8000
 
 # uvicornのサーバーを立ち上げる
-ENTRYPOINT [ "poetry", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--reload" ]
+ENTRYPOINT [ "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000" ]
